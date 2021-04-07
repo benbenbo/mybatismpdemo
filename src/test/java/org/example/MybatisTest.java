@@ -14,6 +14,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @RunWith(JUnit4.class)
 public class MybatisTest {
@@ -28,7 +31,45 @@ public class MybatisTest {
         System.out.println(connection);
     }
 
+    /**
+     * 通用的查询操作
+     */
     @Test
+    public void testCommonSelect(){
+        //1.通过id查询
+//        Employee employee = employeeMapper.selectById(7);
+//        System.out.println(employee);
+        //2.通过多个列进行查询id+lastName
+//        Employee employee=new Employee();
+//        employee.setId(7);
+//        employee.setLastName("小泽老师");
+//        employee.setGender(0);
+//        Employee employee1 = employeeMapper.selectOne(employee);
+//        System.out.println(employee1);
+        //3.通过多个id查询
+//        List<Integer> idList=new ArrayList<>();
+//        idList.add(4);
+//        idList.add(5);
+//        idList.add(6);
+//        idList.add(7);
+//        List<Employee> employees = employeeMapper.selectBatchIds(idList);
+//        System.out.println(employees);
+        //4.通过Map封装条件查询
+//        HashMap<String, Object> hashMap = new HashMap<>();
+//        hashMap.put("last_name","Tom");//这个是使用列名
+//        hashMap.put("gender",1);
+//        List<Employee> employees = employeeMapper.selectByMap(hashMap);
+//        System.out.println(employees);
+
+        //5.分页查询
+
+
+    }
+
+
+    /**
+     * 通用更新操作
+     */
     public void testCommonUpdate(){
         Employee employee=new Employee();
         employee.setId(7);
