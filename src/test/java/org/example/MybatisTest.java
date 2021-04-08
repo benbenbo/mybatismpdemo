@@ -1,5 +1,6 @@
 package org.example;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -15,6 +16,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,9 +34,28 @@ public class MybatisTest {
     }
 
     /**
-     * 通用的查询操作
+     * 通用的删除操作
      */
     @Test
+    public void testCommonDelete(){
+        //根据Id进行删除
+//        Integer i = employeeMapper.deleteById(12);
+//        System.out.println("成功删除"+i+"条记录");
+        //根据条件进行删除
+//        HashMap<String, Object> hashMap = new HashMap<>();
+//        hashMap.put("last_name","Mp");
+//        hashMap.put("email","mp@atguigu.com");
+//        Integer i = employeeMapper.deleteByMap(hashMap);
+//        System.out.println("成功删除"+i+"条记录");
+        //根据多个id删除记录
+        Integer i = employeeMapper.deleteBatchIds(Arrays.asList(3,4,5));
+        System.out.println("成功删除"+i+"条记录");
+    }
+
+
+    /**
+     * 通用的查询操作
+     */
     public void testCommonSelect(){
         //1.通过id查询
 //        Employee employee = employeeMapper.selectById(7);
@@ -61,7 +82,10 @@ public class MybatisTest {
 //        List<Employee> employees = employeeMapper.selectByMap(hashMap);
 //        System.out.println(employees);
 
-        //5.分页查询
+        //5.分页查询,
+        //Page的T是实体类，这里是Employee
+        List<Employee> employees = employeeMapper.selectPage(new Page<>(2, 2), null);
+        System.out.println(employees);
 
 
     }
