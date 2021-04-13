@@ -1,5 +1,6 @@
 package org.example;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.ibatis.session.SqlSession;
@@ -33,14 +34,23 @@ public class MybatisTest {
         System.out.println(connection);
     }
 
+    @Test
+    public void testEntityWrapperSelect(){
+        //我们需要分页查询tbl_employee表中，年龄在18~50之间性别为男且姓名为Tom的所有用户
+        //注意：EntityWrapper使用的是列名
+        List<Employee> employees = employeeMapper.selectPage(new Page<Employee>(1, 2),
+                new EntityWrapper<Employee>().between("age", 18, 50)
+                        .eq("gender", 1)
+                        .eq("last_name", "Tom"));
+        System.out.println(employees);
+    }
     /**
      * 通用的删除操作
      */
-    @Test
     public void testCommonDelete(){
         //根据Id进行删除
-//        Integer i = employeeMapper.deleteById(12);
-//        System.out.println("成功删除"+i+"条记录");
+        Integer i = employeeMapper.deleteById(12);
+        System.out.println("成功删除"+i+"条记录");
         //根据条件进行删除
 //        HashMap<String, Object> hashMap = new HashMap<>();
 //        hashMap.put("last_name","Mp");
@@ -48,8 +58,8 @@ public class MybatisTest {
 //        Integer i = employeeMapper.deleteByMap(hashMap);
 //        System.out.println("成功删除"+i+"条记录");
         //根据多个id删除记录
-        Integer i = employeeMapper.deleteBatchIds(Arrays.asList(3,4,5));
-        System.out.println("成功删除"+i+"条记录");
+//        Integer i = employeeMapper.deleteBatchIds(Arrays.asList(3,4,5));
+//        System.out.println("成功删除"+i+"条记录");
     }
 
 
