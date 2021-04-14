@@ -1,5 +1,6 @@
 package org.example;
 
+import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -34,6 +35,7 @@ public class MybatisTest {
         System.out.println(connection);
     }
 
+    @Test
     public void testEntityWrapperSelect(){
         //我们需要分页查询tbl_employee表中，年龄在18~50之间性别为男且姓名为Tom的所有用户
         //注意：EntityWrapper使用的是列名
@@ -44,16 +46,28 @@ public class MybatisTest {
         System.out.println(employees);*/
 
         //查询tbl_employee表中，性别为女且名字带有老师 或者 邮箱带有“a”
-        List<Employee> employees = employeeMapper.selectList(new EntityWrapper<Employee>()
+        /*List<Employee> employees = employeeMapper.selectList(new EntityWrapper<Employee>()
                 .eq("gender", 0)
                 .like("last_name", "老师")
                 //.or() //
                 .orNew()
                 .like("email", "a")
         );
-        System.out.println(employees);
+        System.out.println(employees);*/
+
+        //查询性别为女的，根据age进行排序，进行分页
+        /*List<Employee> employees = employeeMapper.selectList(new EntityWrapper<Employee>()
+                .eq("gender", 0)
+                .orderBy("age")
+                .last("desc limit 1,3"));
+        System.out.println(employees);*/
+
+        List<Employee> list = employeeMapper.selectPage(new Page<Employee>(1, 2), Condition.create()
+                .eq("last_name", "Tom")
+                .eq("gender",1)
+                .between("age",18,50));
+        System.out.println(list);
     }
-    @Test
     public void testEntityWrapperUpdate(){
         //对名字为Tom且age为44的记录进行修改为
         //名字="苍老师"，性别为女，email为cls@sina.com
@@ -68,7 +82,13 @@ public class MybatisTest {
         System.out.println("成功修改"+update+"条数据");
     }
 
-
+    public void testEntityWrapperDelete(){
+        //删除名字为Tom且年龄为22的记录
+        Integer delete = employeeMapper.delete(new EntityWrapper<Employee>()
+                .eq("last_name", "Tom")
+                .eq("age", 22));
+        System.out.println("成功修改"+delete+"条数据");
+    }
 
     /**
      * 通用的删除操作
