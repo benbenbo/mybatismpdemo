@@ -34,16 +34,42 @@ public class MybatisTest {
         System.out.println(connection);
     }
 
-    @Test
     public void testEntityWrapperSelect(){
         //我们需要分页查询tbl_employee表中，年龄在18~50之间性别为男且姓名为Tom的所有用户
         //注意：EntityWrapper使用的是列名
-        List<Employee> employees = employeeMapper.selectPage(new Page<Employee>(1, 2),
+        /*List<Employee> employees = employeeMapper.selectPage(new Page<Employee>(1, 2),
                 new EntityWrapper<Employee>().between("age", 18, 50)
                         .eq("gender", 1)
                         .eq("last_name", "Tom"));
+        System.out.println(employees);*/
+
+        //查询tbl_employee表中，性别为女且名字带有老师 或者 邮箱带有“a”
+        List<Employee> employees = employeeMapper.selectList(new EntityWrapper<Employee>()
+                .eq("gender", 0)
+                .like("last_name", "老师")
+                //.or() //
+                .orNew()
+                .like("email", "a")
+        );
         System.out.println(employees);
     }
+    @Test
+    public void testEntityWrapperUpdate(){
+        //对名字为Tom且age为44的记录进行修改为
+        //名字="苍老师"，性别为女，email为cls@sina.com
+        Employee employee = new Employee();
+        employee.setLastName("苍老师");
+        employee.setEmail("cls@sina.com");
+        employee.setGender(0);
+
+        Integer update = employeeMapper.update(employee, new EntityWrapper<Employee>()
+                .eq("last_name", "Tom")
+                .eq("age", 44));
+        System.out.println("成功修改"+update+"条数据");
+    }
+
+
+
     /**
      * 通用的删除操作
      */
